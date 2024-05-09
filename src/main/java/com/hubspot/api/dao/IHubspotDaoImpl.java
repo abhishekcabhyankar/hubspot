@@ -31,8 +31,9 @@ public class IHubspotDaoImpl implements IHubspotDao {
         RestTemplate restTemplate = new RestTemplate();
         PartnerWrapper result = restTemplate.getForObject(getPartnersUrl, PartnerWrapper.class);
         return result.getPartners();
-    
- }   public String sendInvitations(List<Invitation> invitationList) {
+    }
+
+    public String sendInvitations(List<Invitation> invitationList) {
         String response;
         try {
             Map<String, List<Invitation>> list = new HashMap<>();
@@ -40,7 +41,8 @@ public class IHubspotDaoImpl implements IHubspotDao {
 
             HttpEntity<Map<String, List<Invitation>>> request = new HttpEntity<>(list);
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<Invitation> result = restTemplate.postForEntity(postInvitationUrl, request, Invitation.class);
+            ResponseEntity<Invitation> result = restTemplate.postForEntity(postInvitationUrl, request,
+                    Invitation.class);
             response = result.getStatusCode().toString();
 
         } catch (HttpClientErrorException ex) {
@@ -51,6 +53,5 @@ public class IHubspotDaoImpl implements IHubspotDao {
         }
         return response;
     }
-
 
 }
