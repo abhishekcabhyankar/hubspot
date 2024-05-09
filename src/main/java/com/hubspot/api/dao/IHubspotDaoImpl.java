@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.hubspot.api.utils.HubspotConstants.COUNTRIES;
-import static com.hubspot.api.utils.HubspotConstants.FAILURE;
 
 @Repository
 public class IHubspotDaoImpl implements IHubspotDao {
@@ -26,15 +25,14 @@ public class IHubspotDaoImpl implements IHubspotDao {
     @Value("${hubspot.api.post.invitation.url}")
     private String postInvitationUrl;
 
+    @SuppressWarnings("null")
     @Override
     public List<Partner> getPartnersAvailability() {
         RestTemplate restTemplate = new RestTemplate();
         PartnerWrapper result = restTemplate.getForObject(getPartnersUrl, PartnerWrapper.class);
         return result.getPartners();
-    }
-
-    @Override
-    public String sendInvitations(List<Invitation> invitationList) {
+    
+ }   public String sendInvitations(List<Invitation> invitationList) {
         String response;
         try {
             Map<String, List<Invitation>> list = new HashMap<>();
