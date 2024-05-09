@@ -7,8 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +27,7 @@ public class HubspotApiController {
 
 
     @ApiOperation(value = "method to get list of partners with availability, transform the data and send post request for invitations.")
-    @RequestMapping(value = "/" + "partners", method = RequestMethod.GET)
+    @GetMapping("/" + "partners")
     @ResponseStatus(HttpStatus.OK)
     public String getPartnersAndSendInvitations() {
         partnersList = hubspotApiService.getPartnersAvailability();
