@@ -1,5 +1,6 @@
 package com.hubspot.api.controller;
 
+import com.hubspot.api.model.Employee;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 import com.hubspot.api.service.IHubspotApiService;
@@ -39,5 +40,21 @@ public class HubspotApiController {
 
         invitationsList = hubspotApiService.getInvitationsList(partnersList);
         return hubspotApiService.sendInvitations(invitationsList);
+    }
+
+    @ApiOperation(value = "method to get list of partners with availability, transform the data and send post request for invitations.")
+    @GetMapping("/" + "employee")
+    @ResponseStatus(HttpStatus.OK)
+    public String getEmployeeString() {
+        List<Employee> employees = hubspotApiService.getAllEmployee();
+
+        if (CollectionUtils.isEmpty(employees)) {
+            System.out.println("Unable to get employee list information");
+            return null;
+        }
+
+        Employee employee = new Employee(10, "Abhishek", 1000, 19, "");
+
+        return hubspotApiService.createEmployeeService(employee);
     }
 }

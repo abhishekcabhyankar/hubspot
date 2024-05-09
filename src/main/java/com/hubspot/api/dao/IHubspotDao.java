@@ -1,5 +1,6 @@
 package com.hubspot.api.dao;
 
+import com.hubspot.api.model.Employee;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 
@@ -9,5 +10,9 @@ public interface IHubspotDao {
 
     List<Partner> getPartnersAvailability();
 
+    List<Employee> getAllEmployees();
+
     String sendInvitations(List<Invitation> invitationList);
+
+    String createEmployee(Employee employee);
 }

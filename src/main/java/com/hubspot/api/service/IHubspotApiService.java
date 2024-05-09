@@ -1,5 +1,6 @@
 package com.hubspot.api.service;
 
+import com.hubspot.api.model.Employee;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 
@@ -13,4 +14,7 @@ public interface IHubspotApiService {
 
     String sendInvitations(List<Invitation> invitations);
 
+    List<Employee> getAllEmployee();
+
+    String createEmployeeService(Employee employee);
 }

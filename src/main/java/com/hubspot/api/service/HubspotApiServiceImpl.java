@@ -1,6 +1,7 @@
 package com.hubspot.api.service;
 
 import com.hubspot.api.dao.IHubspotDao;
+import com.hubspot.api.model.Employee;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 import com.hubspot.api.utils.HubspotHelper;
@@ -30,4 +31,15 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
     public String sendInvitations(List<Invitation> invitations) {
         return hubspotDao.sendInvitations(invitations);
     }
+
+    @Override
+    public List<Employee> getAllEmployee() {
+        return hubspotDao.getAllEmployees();
+    }
+
+    @Override
+    public String createEmployeeService(Employee employee) {
+        return hubspotDao.createEmployee(employee);
+    }
+
 }

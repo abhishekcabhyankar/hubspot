@@ -1,5 +1,7 @@
 package com.hubspot.api.dao;
 
+import com.hubspot.api.model.Employee;
+import com.hubspot.api.model.EmployeeWrapper;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 import com.hubspot.api.model.PartnerWrapper;
@@ -25,6 +27,12 @@ public class IHubspotDaoImpl implements IHubspotDao {
     @Value("${hubspot.api.post.invitation.url}")
     private String postInvitationUrl;
 
+    @Value("${hubspot.api.get.dummy.url}")
+    private String dummyUrl;
+
+    @Value("${hubspot.api.get.create.url}")
+    private String createUrl;
+
     @SuppressWarnings("null")
     @Override
     public List<Partner> getPartnersAvailability() {
@@ -44,6 +52,34 @@ public class IHubspotDaoImpl implements IHubspotDao {
             ResponseEntity<Invitation> result = restTemplate.postForEntity(postInvitationUrl, request,
                     Invitation.class);
             response = result.getStatusCode().toString();
+
+        } catch (HttpClientErrorException ex) {
+            System.out.println("Exception status code: " + ex.getStatusCode());
+            System.out.println("Exception response body: " + ex.getResponseBodyAsString());
+            System.out.println("Exception during send invitations post request: " + ex.getMessage());
+            response = ex.getResponseBodyAsString();
+        }
+        return response;
+    }
+
+    @SuppressWarnings("null")
+    @Override
+    public List<Employee> getAllEmployees() {
+        RestTemplate restTemplate = new RestTemplate();
+        EmployeeWrapper result = restTemplate.getForObject(dummyUrl, EmployeeWrapper.class);
+        return result.getData();
+    }
+
+    @Override
+    public String createEmployee(Employee employee) {
+        String response;
+        try {
+
+            HttpEntity<Employee> request = new HttpEntity<>(employee);
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> result = restTemplate.postForEntity(createUrl, request,
+                    String.class);
+            response = result.toString();
 
         } catch (HttpClientErrorException ex) {
             System.out.println("Exception status code: " + ex.getStatusCode());
