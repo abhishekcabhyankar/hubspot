@@ -1,6 +1,7 @@
 package com.hubspot.api.service;
 
 import com.hubspot.api.model.Employee;
+import com.hubspot.api.model.EmployeeResponse;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 
@@ -16,5 +17,5 @@ public interface IHubspotApiService {
 
     List<Employee> getAllEmployee();
 
-    String createEmployeeService(Employee employee);
+    String createEmployeeService(EmployeeResponse employee);
 }

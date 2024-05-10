@@ -1,6 +1,7 @@
 package com.hubspot.api.controller;
 
 import com.hubspot.api.model.Employee;
+import com.hubspot.api.model.EmployeeResponse;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
 import com.hubspot.api.service.IHubspotApiService;
@@ -25,7 +26,6 @@ public class HubspotApiController {
     private List<Partner> partnersList;
 
     private List<Invitation> invitationsList;
-
 
     @ApiOperation(value = "method to get list of partners with availability, transform the data and send post request for invitations.")
     @GetMapping("/" + "partners")
@@ -53,8 +53,8 @@ public class HubspotApiController {
             return null;
         }
 
-        Employee employee = new Employee(10, "Abhishek", 1000, 19, "");
+        EmployeeResponse employeeResponse = new EmployeeResponse("Abhishek", "1000", "19");
 
-        return hubspotApiService.createEmployeeService(employee);
+        return hubspotApiService.createEmployeeService(employeeResponse);
     }
 }

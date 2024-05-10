@@ -1,6 +1,7 @@
 package com.hubspot.api.dao;
 
 import com.hubspot.api.model.Employee;
+import com.hubspot.api.model.EmployeeResponse;
 import com.hubspot.api.model.EmployeeWrapper;
 import com.hubspot.api.model.Invitation;
 import com.hubspot.api.model.Partner;
@@ -71,11 +72,11 @@ public class IHubspotDaoImpl implements IHubspotDao {
     }
 
     @Override
-    public String createEmployee(Employee employee) {
+    public String createEmployee(EmployeeResponse employee) {
         String response;
         try {
 
-            HttpEntity<Employee> request = new HttpEntity<>(employee);
+            HttpEntity<EmployeeResponse> request = new HttpEntity<>(employee);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> result = restTemplate.postForEntity(createUrl, request,
                     String.class);
