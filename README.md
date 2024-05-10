@@ -100,6 +100,9 @@ We think you should be able to complete this project in a single sitting, so try
 Download VS code and install following things:
 JDK, Spring Boot, Maven, Git etc
 Load this project in VSCode from Git, or download and open as JAVA project
+Run the application and visit
+<http://localhost:8080/hubspot/api/events>
+Response: 200 OK
 
 ## Credits
 
