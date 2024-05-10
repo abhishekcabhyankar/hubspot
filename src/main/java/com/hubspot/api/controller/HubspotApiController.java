@@ -26,15 +26,21 @@ public class HubspotApiController {
     @GetMapping("/" + "events")
     @ResponseStatus(HttpStatus.OK)
     public String getEventsFromHubSpot() {
-
+        
+        // call the hubspot API and get the list of events
         List<Event> eventList = hubspotApiService.getEventService();
         if (CollectionUtils.isEmpty(eventList)) {
             System.out.println("Unable to get events");
             return "Unable to get events list.";
         }
+        
+        // create Visitor -> List<Events> map
         HashMap<String, List<Event>> visitorEventListMap = hubspotApiService.createVisitorEventsMap(eventList);
+        
+        // create Visitor -> List<Session> map
         HashMap<String, List<Session>> visitorSessionMap = hubspotApiService
                 .createVisitorSessionMap(visitorEventListMap);
+                
         String response = hubspotApiService.postSessionService(visitorSessionMap);
         return response;
     }

@@ -17,9 +17,6 @@ import com.hubspot.api.utils.HubspotConstants;
 
 @Repository
 public class IHubspotDaoImpl implements IHubspotDao {
-    
-
-    String SESSIONS_BY_USER = HubspotConstants.SESSIONS_BY_USER;
 
     @Value("${hubspot.api.get.events.url}")
     private String eventsUrl;
@@ -27,6 +24,11 @@ public class IHubspotDaoImpl implements IHubspotDao {
     @Value("${hubspot.api.post.sessions.url}")
     private String sessionsUrl;
 
+    /*
+     * call hubspot API and get the list of events
+     * Each individual event will be transformed into EventWrapper class
+     * which is nothing but a list of Events
+     */
     @SuppressWarnings("null")
     @Override
     public List<Event> getEventsDao() {
@@ -35,13 +37,16 @@ public class IHubspotDaoImpl implements IHubspotDao {
         return result.getEvents();
     }
 
+    /*
+     * call hubspot API and POST the map
+     */
     @Override
     public String postSessionDoa(HashMap<String, List<Session>> visitorSessionMap) {
         String response;
         try {
-            HashMap<String , HashMap<String, List<Session>>> sessionMap = new HashMap<>();
-            sessionMap.put(SESSIONS_BY_USER, visitorSessionMap);
-            HttpEntity<HashMap<String , HashMap<String, List<Session>>>> request = new HttpEntity<>(sessionMap);
+            HashMap<String, HashMap<String, List<Session>>> sessionMap = new HashMap<>();
+            sessionMap.put(HubspotConstants.SESSIONS_BY_USER, visitorSessionMap);
+            HttpEntity<HashMap<String, HashMap<String, List<Session>>>> request = new HttpEntity<>(sessionMap);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> result = restTemplate.postForEntity(sessionsUrl, request,
                     String.class);
