@@ -42,6 +42,7 @@ The data set looks like this:
     }
   ]
 }
+```
 
 Given this input data, we want to create a set of sessions of the incoming data. A sessions is defined as a group of events from a single visitor with no more than 10 minutes between each event. A visitor can have multiple sessions.
 
@@ -80,6 +81,7 @@ So given the example input data above, we would expect output which looks like:
   ]
 }
 }
+```
 
 Once the event data has been transformed into session, you will need to send the result via an http POST to given Endpoint
 
