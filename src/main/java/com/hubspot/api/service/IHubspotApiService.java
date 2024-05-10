@@ -8,12 +8,11 @@ import java.util.List;
 
 public interface IHubspotApiService {
 
-
     List<Event> getEventService();
 
     String postSessionService(HashMap<String, List<Session>> visitorSessionMap);
 
     HashMap<String, List<Event>> createVisitorEventsMap(List<Event> eventList);
 
-    Session createSession(long eventStartTime, long prevTimeStamp, List<String> pageList);
+    HashMap<String, List<Session>> createVisitorSessionMap(HashMap<String, List<Event>> visitorEventListMap);
 }

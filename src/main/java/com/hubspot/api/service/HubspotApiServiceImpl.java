@@ -16,6 +16,10 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
     @Autowired
     private IHubspotDao hubspotDao;
 
+
+    HubspotHelper hubspotHelper = new HubspotHelper();
+
+
     @Override
     public List<Event> getEventService() {
         List<Event> eventList = hubspotDao.getEventsDao();
@@ -24,7 +28,7 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
 
     @Override
     public HashMap<String, List<Event>> createVisitorEventsMap(List<Event> eventList) {
-        return HubspotHelper.createVisitorEventMapHelper(eventList);
+        return hubspotHelper.createVisitorEventMapHelper(eventList);
     }
 
     @Override
@@ -33,8 +37,8 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
     }
 
     @Override
-    public Session createSession(long eventStartTime, long prevTimeStamp, List<String> pageList) {
-        return HubspotHelper.createSession(eventStartTime, prevTimeStamp, pageList);
+    public HashMap<String, List<Session>> createVisitorSessionMap(HashMap<String, List<Event>> visitorEventListMap) {
+        return hubspotHelper.createVisitorSessionMap(visitorEventListMap);
     }
 
 }
