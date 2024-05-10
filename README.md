@@ -6,6 +6,8 @@ You're in charge of implementing a new analytics "sessions" view. You're given a
 
 You can get the raw event data from the dataset API at given GET Endpoint
 The data set looks like this:
+
+```json
 {
   "events": [
     {
@@ -44,6 +46,8 @@ The data set looks like this:
 Given this input data, we want to create a set of sessions of the incoming data. A sessions is defined as a group of events from a single visitor with no more than 10 minutes between each event. A visitor can have multiple sessions.
 
 So given the example input data above, we would expect output which looks like:
+
+```json
 {
 "sessionsByUser": {
   "f877b96c-9969-4abc-bbe2-54b17d030f8b": [
