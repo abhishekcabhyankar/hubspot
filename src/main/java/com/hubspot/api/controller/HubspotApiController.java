@@ -27,56 +27,37 @@ public class HubspotApiController {
     private IHubspotApiService hubspotApiService;
 
     private List<Event> eventList;
-
-
+    CustomComparator cc = new CustomComparator();
+    HashMap<String, List<Session>> visitorSessionMap;
+    HashMap<String, List<Event>> visitorEventListMap;
+    List<String> pageList;
     @ApiOperation(value = "method to get list of events from hubspot")
     @GetMapping("/" + "events")
     @ResponseStatus(HttpStatus.OK)
     public String getEventsFromHubSpot() {
+        
         eventList = hubspotApiService.getEventService();
 
         if (CollectionUtils.isEmpty(eventList)) {
             System.out.println("Unable to get events");
             return "Unable to get events list.";
         }
-        HashMap<String, List<Session>> visitorSessionMap = new HashMap<>();
-        HashMap<String, List<Event>> map = hubspotApiService.createVisitorEventsMap(eventList);
-        CustomComparator cc = new CustomComparator();
+
+        visitorSessionMap = new HashMap<>();
+        visitorEventListMap = hubspotApiService.createVisitorEventsMap(eventList);
         
-        for (String visitorKey : map.keySet()) {
-            List<Event> visitorEvents = map.get(visitorKey);
-            System.out.println(visitorKey + " is the visitor");
-            for (Event event : visitorEvents) {
-                System.out.println(event.getUrl());
-            }
-            System.out.println();
-        }
-        for (String visitorKey : map.keySet()) {
-            List<Event> visitorEvents = map.get(visitorKey);
+        for (String visitorKey : visitorEventListMap.keySet()) {
+            List<Event> visitorEvents = visitorEventListMap.get(visitorKey);
             Collections.sort(visitorEvents, cc);
-            long eventStartTime = 0;
-            long eventDuration = 0;
-            long prevTimeStamp = 0;
-            List<String> pageList;
             List<Session> sessionList = new ArrayList<>();
-
-            if (visitorEvents.size() == 1) {
-                Session session = new Session();
-                pageList = new ArrayList<>();
-                pageList.add(visitorEvents.get(0).getUrl());
-                session.setPages(pageList);
-                session.setDuration(0);
-                session.setStartTime(visitorEvents.get(0).getTimestamp());
-                sessionList.add(session);
-                visitorSessionMap.put(visitorKey, sessionList);
-                continue;
-            }
-
             Event firstEvent = visitorEvents.get(0);
+
             pageList = new ArrayList<>();
             pageList.add(firstEvent.getUrl());
-            eventStartTime = firstEvent.getTimestamp();
-            prevTimeStamp = eventStartTime;
+
+            long eventStartTime = firstEvent.getTimestamp();
+            long prevTimeStamp = firstEvent.getTimestamp();;
+
             for (int i = 1; i < visitorEvents.size(); i++) {
                 Event temp = visitorEvents.get(i);
                 long currStartTime = temp.getTimestamp();
@@ -86,15 +67,8 @@ public class HubspotApiController {
                     pageList.add(temp.getUrl());
                     continue;
                 }
-
-                Session session = new Session();
-                session.setStartTime(eventStartTime);
-                eventDuration = prevTimeStamp - eventStartTime;
-                session.setDuration(eventDuration);
-                session.setPages(pageList);
-
-                sessionList.add(session);
-
+                Session newSession = createSession(eventStartTime, prevTimeStamp);
+                sessionList.add(newSession);
                 pageList = new ArrayList<>();
                 pageList.add(temp.getUrl());
                 eventStartTime = currStartTime;
@@ -102,14 +76,19 @@ public class HubspotApiController {
             }
 
             // handle the last item
-            Session session = new Session();
-            session.setStartTime(eventStartTime);
-            eventDuration = prevTimeStamp - eventStartTime;
-            session.setDuration(eventDuration);
-            session.setPages(pageList);
-            sessionList.add(session);
+            Session newSession = createSession(eventStartTime, prevTimeStamp);
+            sessionList.add(newSession);
             visitorSessionMap.put(visitorKey, sessionList);
         }
         return hubspotApiService.postSessionService(visitorSessionMap);
+    }
+
+    public Session createSession(long eventStartTime, long prevTimeStamp){
+        Session session = new Session();
+        session.setStartTime(eventStartTime);
+        long eventDuration = prevTimeStamp - eventStartTime;
+        session.setDuration(eventDuration);
+        session.setPages(pageList);
+        return session;
     }
 }
