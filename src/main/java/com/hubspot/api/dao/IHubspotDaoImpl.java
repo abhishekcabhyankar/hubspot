@@ -13,11 +13,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
-
+import com.hubspot.api.utils.HubspotConstants;
 
 @Repository
 public class IHubspotDaoImpl implements IHubspotDao {
     
+
+    String SESSIONS_BY_USER = HubspotConstants.SESSIONS_BY_USER;
+
     @Value("${hubspot.api.get.events.url}")
     private String eventsUrl;
 
@@ -29,7 +32,6 @@ public class IHubspotDaoImpl implements IHubspotDao {
     public List<Event> getEventsDao() {
         RestTemplate restTemplate = new RestTemplate();
         EventWrapper result = restTemplate.getForObject(eventsUrl, EventWrapper.class);
-        //return generateTestData();
         return result.getEvents();
     }
 
@@ -37,10 +39,8 @@ public class IHubspotDaoImpl implements IHubspotDao {
     public String postSessionDoa(HashMap<String, List<Session>> visitorSessionMap) {
         String response;
         try {
-
-            String sessionsByUser = "sessionsByUser";
             HashMap<String , HashMap<String, List<Session>>> sessionMap = new HashMap<>();
-            sessionMap.put(sessionsByUser, visitorSessionMap);
+            sessionMap.put(SESSIONS_BY_USER, visitorSessionMap);
             HttpEntity<HashMap<String , HashMap<String, List<Session>>>> request = new HttpEntity<>(sessionMap);
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> result = restTemplate.postForEntity(sessionsUrl, request,
@@ -50,7 +50,7 @@ public class IHubspotDaoImpl implements IHubspotDao {
         } catch (HttpClientErrorException ex) {
             System.out.println("Exception status code: " + ex.getStatusCode());
             System.out.println("Exception response body: " + ex.getResponseBodyAsString());
-            System.out.println("Exception during send invitations post request: " + ex.getMessage());
+            System.out.println("Exception during send sessions post request: " + ex.getMessage());
             response = ex.getResponseBodyAsString();
         }
         return response;

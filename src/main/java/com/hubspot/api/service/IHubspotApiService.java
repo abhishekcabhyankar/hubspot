@@ -14,4 +14,6 @@ public interface IHubspotApiService {
     String postSessionService(HashMap<String, List<Session>> visitorSessionMap);
 
     HashMap<String, List<Event>> createVisitorEventsMap(List<Event> eventList);
+
+    Session createSession(long eventStartTime, long prevTimeStamp, List<String> pageList);
 }

@@ -31,21 +31,23 @@ public class HubspotApiController {
     HashMap<String, List<Session>> visitorSessionMap;
     HashMap<String, List<Event>> visitorEventListMap;
     List<String> pageList;
+
     @ApiOperation(value = "method to get list of events from hubspot")
     @GetMapping("/" + "events")
     @ResponseStatus(HttpStatus.OK)
     public String getEventsFromHubSpot() {
-        
+
         eventList = hubspotApiService.getEventService();
+        visitorSessionMap = new HashMap<>();
 
         if (CollectionUtils.isEmpty(eventList)) {
             System.out.println("Unable to get events");
             return "Unable to get events list.";
         }
 
-        visitorSessionMap = new HashMap<>();
+     
         visitorEventListMap = hubspotApiService.createVisitorEventsMap(eventList);
-        
+
         for (String visitorKey : visitorEventListMap.keySet()) {
             List<Event> visitorEvents = visitorEventListMap.get(visitorKey);
             Collections.sort(visitorEvents, cc);
@@ -56,7 +58,7 @@ public class HubspotApiController {
             pageList.add(firstEvent.getUrl());
 
             long eventStartTime = firstEvent.getTimestamp();
-            long prevTimeStamp = firstEvent.getTimestamp();;
+            long prevTimeStamp = firstEvent.getTimestamp();
 
             for (int i = 1; i < visitorEvents.size(); i++) {
                 Event temp = visitorEvents.get(i);
@@ -67,7 +69,7 @@ public class HubspotApiController {
                     pageList.add(temp.getUrl());
                     continue;
                 }
-                Session newSession = createSession(eventStartTime, prevTimeStamp);
+                Session newSession = hubspotApiService.createSession(eventStartTime, prevTimeStamp, pageList);
                 sessionList.add(newSession);
                 pageList = new ArrayList<>();
                 pageList.add(temp.getUrl());
@@ -76,19 +78,10 @@ public class HubspotApiController {
             }
 
             // handle the last item
-            Session newSession = createSession(eventStartTime, prevTimeStamp);
+            Session newSession = hubspotApiService.createSession(eventStartTime, prevTimeStamp, pageList);
             sessionList.add(newSession);
             visitorSessionMap.put(visitorKey, sessionList);
         }
         return hubspotApiService.postSessionService(visitorSessionMap);
-    }
-
-    public Session createSession(long eventStartTime, long prevTimeStamp){
-        Session session = new Session();
-        session.setStartTime(eventStartTime);
-        long eventDuration = prevTimeStamp - eventStartTime;
-        session.setDuration(eventDuration);
-        session.setPages(pageList);
-        return session;
     }
 }

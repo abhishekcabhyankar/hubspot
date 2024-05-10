@@ -32,4 +32,9 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
         return hubspotDao.postSessionDoa(visitorSessionMap);
     }
 
+    @Override
+    public Session createSession(long eventStartTime, long prevTimeStamp, List<String> pageList) {
+        return HubspotHelper.createSession(eventStartTime, prevTimeStamp, pageList);
+    }
+
 }
