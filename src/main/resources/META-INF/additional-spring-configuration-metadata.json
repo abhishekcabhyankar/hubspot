@@ -18,5 +18,15 @@
     "name": "hubspot.api.get.create.url",
     "type": "java.lang.String",
     "description": "A description for 'hubspot.api.get.create.url'"
+  },
+  {
+    "name": "hubspot.api.get.events.url",
+    "type": "java.lang.String",
+    "description": "A description for 'hubspot.api.get.events.url'"
+  },
+  {
+    "name": "hubspot.api.post.sessions.url",
+    "type": "java.lang.String",
+    "description": "A description for 'hubspot.api.post.sessions.url'"
   }
 ]}
