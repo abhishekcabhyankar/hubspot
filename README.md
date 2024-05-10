@@ -9,3 +9,8 @@ Hit url : http://localhost:8080/hubspot/api/partners from browser or Postman URL
 
 If partners are retrieved and successfully transformed then 200 OK will be returned as successful response.
 Otherwise 400 will be returned with proper error message.
+
+It also has dummy employee get and post requests
+https://dummy.restapiexample.com/
+
+Hit url : http://localhost:8080/hubspot/api/employee from browser or Postman URL.
