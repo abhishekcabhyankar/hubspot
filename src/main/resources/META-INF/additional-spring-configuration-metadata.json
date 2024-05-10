@@ -1,25 +1,5 @@
 {"properties": [
   {
-    "name": "hubspot.api.get.partners.url",
-    "type": "java.lang.String",
-    "description": "Partners GET API to get JSON data"
-  },
-  {
-    "name": "hubspot.api.post.invitation.url",
-    "type": "java.lang.String",
-    "description": "Make a post request at this endpoint with partner data'"
-  },
-  {
-    "name": "hubspot.api.get.dummy.url",
-    "type": "java.lang.String",
-    "description": "A description for 'hubspot.api.get.dummy.url'"
-  },
-  {
-    "name": "hubspot.api.get.create.url",
-    "type": "java.lang.String",
-    "description": "A description for 'hubspot.api.get.create.url'"
-  },
-  {
     "name": "hubspot.api.get.events.url",
     "type": "java.lang.String",
     "description": "A description for 'hubspot.api.get.events.url'"

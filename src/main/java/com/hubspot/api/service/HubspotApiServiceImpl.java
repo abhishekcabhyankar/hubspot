@@ -1,11 +1,7 @@
 package com.hubspot.api.service;
 
 import com.hubspot.api.dao.IHubspotDao;
-import com.hubspot.api.model.Employee;
-import com.hubspot.api.model.EmployeeResponse;
 import com.hubspot.api.model.Event;
-import com.hubspot.api.model.Invitation;
-import com.hubspot.api.model.Partner;
 import com.hubspot.api.model.Session;
 import com.hubspot.api.utils.HubspotHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +15,6 @@ public class HubspotApiServiceImpl implements IHubspotApiService {
 
     @Autowired
     private IHubspotDao hubspotDao;
-
-    @Override
-    public List<Partner> getPartnersAvailability() {
-        List<Partner> partnersList = hubspotDao.getPartnersAvailability();
-        return partnersList;
-    }
-
-    @Override
-    public List<Invitation> getInvitationsList(List<Partner> partnersList) {
-        return HubspotHelper.checkAvailableDatesAndGetInvitations(partnersList);
-    }
-
-    @Override
-    public String sendInvitations(List<Invitation> invitations) {
-        return hubspotDao.sendInvitations(invitations);
-    }
-
-    @Override
-    public List<Employee> getAllEmployee() {
-        return hubspotDao.getAllEmployees();
-    }
-
-    @Override
-    public String createEmployeeService(EmployeeResponse employee) {
-        return hubspotDao.createEmployee(employee);
-    }
 
     @Override
     public List<Event> getEventService() {
